@@ -18,6 +18,22 @@ public class Test {
         this.testReporter.publishEntry("\nRunning "+testInfo.getDisplayName() + " with tags " + testInfo.getTags()+"\n");
     }
 
+    @org.junit.jupiter.api.Test
+    @Tag("Sorting_a_blank_list")
+    public void Test1(){  //i) Sorting a blank list
+
+        Integer[] input = {};
+//        Integer[] expected = {};
+        Integer[] reality = sortUtil.selectionSort(input,"desc");
+
+        boolean sorted = isSorted_desc(reality,reality.length);
+        boolean notAltered = isEqual(input,reality);
+
+        showMessage(sorted,notAltered,"Sorting_a_blank_list (with "+input.length +" elements) ");
+
+
+    }
+
 
     @org.junit.jupiter.api.Test
     @Tag("Sorting_just_one_number")
@@ -163,17 +179,7 @@ public class Test {
         return isSorted_desc(arr, n - 1);
     }
 
-    private boolean isEqual(Integer[] arr1, Integer[] arr2){
 
-        List<Integer> l1 = new ArrayList<Integer>(Arrays.asList(arr1));
-        List<Integer> l2 = new ArrayList<Integer>(Arrays.asList(arr2));
-
-        Collections.sort(l1);
-        Collections.sort(l2);
-
-        return l1.equals(l2);
-
-    }
 
     private void showMessage(boolean firstcheck, boolean secondCheck, String testTag){
 
@@ -232,20 +238,46 @@ public class Test {
 
 
 
-    @org.junit.jupiter.api.Test
-    @Tag("Sorting_a_blank_list")
-    public void Test1(){  //i) Sorting a blank list
-
-        Integer[] input = {};
-//        Integer[] expected = {};
-        Integer[] reality = sortUtil.selectionSort(input,"desc");
-
-        boolean sorted = isSorted_desc(reality,reality.length);
-        boolean notAltered = isEqual(input,reality);
-
-        showMessage(sorted,notAltered,"Sorting_a_blank_list (with "+input.length +" elements) ");
 
 
+    private boolean isEqual(Integer[] A, Integer[] B)
+    {
+        int n = A.length;
+        if (B.length != n)
+        {
+            return false;
+        }
+
+        // visited array is used to handle duplicates
+        Vector<Boolean> visited = new Vector<Boolean>();
+        for (int i = 0; i < n; i++)
+        {
+            visited.add(i, Boolean.FALSE);
+        }
+
+        // each element of A is matched
+        // against each element of B
+        for (int i = 0; i < n; i++)
+        {
+
+            int j = 0;
+            for (j = 0; j < n; j++)
+            {
+                if (A[i] == B[j] && !visited.get(j))
+                {
+                    visited.add(j, Boolean.TRUE);
+                    break;
+                }
+            }
+
+            // If we could not find A[i] in B[]
+            if (j == n)
+            {
+                return false;
+            }
+
+        }
+        return true;
     }
 
 
